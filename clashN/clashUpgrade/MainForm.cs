@@ -6,73 +6,69 @@ using System.Text;
 using System.Web;
 using System.Windows.Forms;
 
-namespace clashUpgrade
+namespace ClashUpgrade
 {
     public partial class MainForm : Form
     {
-        private readonly string defaultFilename = "clashN.zip_temp";
+        private const string DefaultFilename = "clashN.zip_temp";
         private string fileName;
 
         public MainForm(string[] args)
         {
             InitializeComponent();
-            if (args.Length > 0)
-            {
-                fileName = string.Join(" ", args);
-                fileName = HttpUtility.UrlDecode(fileName);
-            }
+            if (args.Length <= 0) return;
+            fileName = string.Join(" ", args);
+            fileName = HttpUtility.UrlDecode(fileName);
         }
-        private void showWarn(string message)
+        private static void ShowWarn(string message)
         {
             MessageBox.Show(message, "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        private void btnOK_Click(object sender, EventArgs e)
+        private void BtnOK_Click(object sender, EventArgs e)
         {
             try
             {
-                Process[] existing = Process.GetProcessesByName("clashN");
-                foreach (Process p in existing)
+                var existing = Process.GetProcessesByName("clashN");
+                foreach (var p in existing)
                 {
-                    string path = p.MainModule.FileName;
-                    if (path == GetPath("clashN.exe"))
-                    {
-                        p.Kill();
-                        p.WaitForExit(100);
-                    }
+                    var path = p.MainModule!.FileName;
+                    if (path != GetPath("clashN.exe")) continue;
+                    p.Kill();
+                    p.WaitForExit(100);
                 }
             }
             catch (Exception ex)
             {
                 // Access may be denied without admin right. The user may not be an administrator.
-                showWarn("Failed to close clashN(关闭clashN失败).\n" +
-                    "Close it manually, or the upgrade may fail.(请手动关闭正在运行的clashN，否则可能升级失败。\n\n" + ex.StackTrace);
+                ShowWarn("Failed to close clashN(关闭clashN失败).\n" +
+                         "Close it manually, or the upgrade may fail.(请手动关闭正在运行的clashN，否则可能升级失败。\n\n" + ex.StackTrace);
             }
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             try
             {
                 if (!File.Exists(fileName))
                 {
-                    if (File.Exists(defaultFilename))
+                    if (File.Exists(DefaultFilename))
                     {
-                        fileName = defaultFilename;
+                        fileName = DefaultFilename;
                     }
                     else
                     {
-                        showWarn("Upgrade Failed, File Not Exist(升级失败,文件不存在).");
+                        ShowWarn("Upgrade Failed, File Not Exist(升级失败,文件不存在).");
                         return;
                     }
                 }
 
-                string thisAppOldFile = Application.ExecutablePath + ".tmp";
+                var thisAppOldFile = Application.ExecutablePath + ".tmp";
                 File.Delete(thisAppOldFile);
-                string startKey = "clashN/";
+                var startKey = "clashN/";
 
 
-                using (ZipArchive archive = ZipFile.OpenRead(fileName))
+                using (var archive = ZipFile.OpenRead(fileName))
                 {
-                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    foreach (var entry in archive.Entries)
                     {
                         try
                         {
@@ -80,7 +76,7 @@ namespace clashUpgrade
                             {
                                 continue;
                             }
-                            string fullName = entry.FullName;
+                            var fullName = entry.FullName;
                             if (fullName.StartsWith(startKey))
                             {
                                 fullName = fullName.Substring(startKey.Length, fullName.Length - startKey.Length);
@@ -90,9 +86,9 @@ namespace clashUpgrade
                                 File.Move(Application.ExecutablePath, thisAppOldFile);
                             }
 
-                            string entryOuputPath = GetPath(fullName);
+                            var entryOuputPath = GetPath(fullName);
 
-                            FileInfo fileInfo = new FileInfo(entryOuputPath);
+                            var fileInfo = new FileInfo(entryOuputPath);
                             fileInfo.Directory.Create();
                             entry.ExtractToFile(entryOuputPath, true);
                         }
@@ -105,13 +101,13 @@ namespace clashUpgrade
             }
             catch (Exception ex)
             {
-                showWarn("Upgrade Failed(升级失败)." + ex.StackTrace);
+                ShowWarn("Upgrade Failed(升级失败)." + ex.StackTrace);
                 return;
             }
             if (sb.Length > 0)
             {
-                showWarn("Upgrade Failed,Hold ctrl + c to copy to clipboard.\n" +
-                    "(升级失败,按住ctrl+c可以复制到剪贴板)." + sb.ToString());
+                ShowWarn("Upgrade Failed,Hold ctrl + c to copy to clipboard.\n" +
+                         "(升级失败,按住ctrl+c可以复制到剪贴板)." + sb.ToString());
                 return;
             }
 
@@ -137,7 +133,7 @@ namespace clashUpgrade
         }
         public static string GetPath(string fileName)
         {
-            string startupPath = StartupPath();
+            var startupPath = StartupPath();
             if (string.IsNullOrEmpty(fileName))
             {
                 return startupPath;

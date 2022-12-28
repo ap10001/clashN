@@ -1,11 +1,11 @@
-using clashN.ViewModels;
 using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Threading;
+using ClashN.ViewModels;
 
-namespace clashN.Views
+namespace ClashN.Views
 {
     /// <summary>
     /// Interaction logic for LogsView.xaml

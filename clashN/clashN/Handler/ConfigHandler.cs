@@ -1,9 +1,9 @@
-﻿using clashN.Mode;
-using clashN.Tool;
+﻿using ClashN.Tool;
 using System.IO;
 using System.Web;
+using ClashN.Mode;
 
-namespace clashN.Handler
+namespace ClashN.Handler
 {
     /// <summary>
     /// 本软件配置文件处理类

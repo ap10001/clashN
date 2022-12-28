@@ -1,11 +1,11 @@
-﻿using clashN.Mode;
-using clashN.Properties;
-using clashN.Tool;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Text;
+using ClashN.Mode;
+using ClashN.Properties;
+using ClashN.Tool;
 
-namespace clashN.Handler
+namespace ClashN.Handler
 {
     public static class SysProxyHandle
     {

@@ -1,10 +1,10 @@
-﻿using clashN.Mode;
-using clashN.ViewModels;
-using ReactiveUI;
+﻿using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows.Input;
+using ClashN.Mode;
+using ClashN.ViewModels;
 
-namespace clashN.Views
+namespace ClashN.Views
 {
     /// <summary>
     /// PorfileEditWindow.xaml 的交互逻辑

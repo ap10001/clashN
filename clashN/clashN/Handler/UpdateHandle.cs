@@ -1,6 +1,5 @@
-﻿using clashN.Base;
-using clashN.Mode;
-using clashN.Resx;
+﻿using ClashN.Base;
+using ClashN.Resx;
 using Splat;
 using System.Diagnostics;
 using System.IO;
@@ -8,8 +7,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using ClashN.Mode;
 
-namespace clashN.Handler
+namespace ClashN.Handler
 {
     class UpdateHandle
     {

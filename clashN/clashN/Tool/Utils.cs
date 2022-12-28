@@ -1,5 +1,4 @@
-﻿using clashN.Base;
-using clashN.Mode;
+﻿using ClashN.Base;
 using Microsoft.Win32;
 using Microsoft.Win32.TaskScheduler;
 using Newtonsoft.Json;
@@ -14,19 +13,23 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Windows.Forms;
+using System.Xml;
+using ClashN.Mode;
 using YamlDotNet.Serialization;
 using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
 using ZXing.Windows.Compatibility;
+using Formatting = Newtonsoft.Json.Formatting;
 
-namespace clashN
+namespace ClashN
 {
     class Utils
     {
@@ -111,7 +114,7 @@ namespace clashN
             try
             {
                 result = JsonConvert.SerializeObject(obj,
-                                           Formatting.Indented,
+                                           Newtonsoft.Json.Formatting.Indented,
                                            new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             }
             catch (Exception ex)
@@ -137,7 +140,7 @@ namespace clashN
                     JsonSerializer serializer;
                     if (nullValue)
                     {
-                        serializer = new JsonSerializer() { Formatting = Formatting.Indented };
+                        serializer = new JsonSerializer() { Formatting = Newtonsoft.Json.Formatting.Indented };
                     }
                     else
                     {
@@ -867,18 +870,13 @@ namespace clashN
         /// <returns></returns>
         public static T DeepCopy<T>(T obj)
         {
-            object retval;
-            using (MemoryStream ms = new MemoryStream())
-            {
-                BinaryFormatter bf = new BinaryFormatter();
-                //序列化成流
-                bf.Serialize(ms, obj);
-                ms.Seek(0, SeekOrigin.Begin);
-                //反序列化成对象
-                retval = bf.Deserialize(ms);
-                ms.Close();
-            }
-            return (T)retval;
+            using var memoryStream = new MemoryStream();
+            //序列化成流
+            var dataContractSerializer = new DataContractSerializer(typeof(T));
+            dataContractSerializer.WriteObject(memoryStream, obj);
+            //反序列化成对象
+            using var xmlDictionaryReader = XmlDictionaryReader.CreateTextReader(memoryStream, new XmlDictionaryReaderQuotas());
+            return (T)dataContractSerializer.ReadObject(xmlDictionaryReader, true)!;
         }
 
         /// <summary>

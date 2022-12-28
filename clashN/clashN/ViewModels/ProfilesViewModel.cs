@@ -1,8 +1,5 @@
-using clashN.Base;
-using clashN.Handler;
-using clashN.Mode;
-using clashN.Resx;
-using clashN.Views;
+using ClashN.Base;
+using ClashN.Resx;
 using DynamicData;
 using DynamicData.Binding;
 using MaterialDesignThemes.Wpf;
@@ -12,9 +9,12 @@ using Splat;
 using System.IO;
 using System.Reactive;
 using System.Windows.Forms;
+using ClashN.Handler;
+using ClashN.Mode;
+using ClashN.Views;
 using Application = System.Windows.Application;
 
-namespace clashN.ViewModels
+namespace ClashN.ViewModels
 {
     public class ProfilesViewModel : ReactiveObject
     {

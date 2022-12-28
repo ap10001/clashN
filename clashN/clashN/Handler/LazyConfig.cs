@@ -1,15 +1,15 @@
-﻿using clashN.Mode;
-using System.Runtime.Intrinsics.X86;
-using static clashN.Mode.ClashProxies;
+﻿using System.Runtime.Intrinsics.X86;
+using ClashN.Mode;
+using static ClashN.Mode.ClashProxies;
 
-namespace clashN.Handler
+namespace ClashN.Handler
 {
     public sealed class LazyConfig
     {
         private static readonly Lazy<LazyConfig> _instance = new Lazy<LazyConfig>(() => new LazyConfig());
         private Config _config;
         private List<CoreInfo> coreInfos;
-        private Dictionary<String, ProxiesItem> _proxies;
+        private Dictionary<String, ClashProxies.ProxiesItem> _proxies;
 
         public static LazyConfig Instance
         {
@@ -24,11 +24,11 @@ namespace clashN.Handler
             return _config;
         }
 
-        public void SetProxies(Dictionary<String, ProxiesItem> proxies)
+        public void SetProxies(Dictionary<String, ClashProxies.ProxiesItem> proxies)
         {
             _proxies = proxies;
         }
-        public Dictionary<String, ProxiesItem> GetProxies()
+        public Dictionary<String, ClashProxies.ProxiesItem> GetProxies()
         {
             return _proxies;
         }

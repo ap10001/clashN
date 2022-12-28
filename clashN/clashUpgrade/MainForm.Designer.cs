@@ -1,4 +1,4 @@
-﻿namespace clashUpgrade
+﻿namespace ClashUpgrade
 {
     partial class MainForm
     {
@@ -57,7 +57,7 @@
             this.btnOK.TabIndex = 0;
             this.btnOK.Text = "&Upgrade(升级)";
             this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            this.btnOK.Click += new System.EventHandler(this.BtnOK_Click);
             // 
             // label1
             // 

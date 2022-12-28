@@ -1,7 +1,5 @@
-using clashN.Base;
-using clashN.Handler;
-using clashN.Mode;
-using clashN.Resx;
+using ClashN.Base;
+using ClashN.Resx;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -10,17 +8,19 @@ using Splat;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
-using static clashN.Mode.ClashProviders;
-using static clashN.Mode.ClashProxies;
+using ClashN.Handler;
+using ClashN.Mode;
+using static ClashN.Mode.ClashProviders;
+using static ClashN.Mode.ClashProxies;
 
-namespace clashN.ViewModels
+namespace ClashN.ViewModels
 {
     public class ProxiesViewModel : ReactiveObject
     {
         private static Config _config;
         private NoticeHandler? _noticeHandler;
-        private Dictionary<String, ProxiesItem> proxies;
-        private Dictionary<String, ProvidersItem> providers;
+        private Dictionary<String, ClashProxies.ProxiesItem> proxies;
+        private Dictionary<String, ClashProviders.ProvidersItem> providers;
         private int delayTimeout = 99999999;
 
         private IObservableCollection<ProxyModel> _proxyGroups = new ObservableCollectionExtended<ProxyModel>();
@@ -227,7 +227,7 @@ namespace clashN.ViewModels
             }
 
             //from api
-            foreach (KeyValuePair<string, ProxiesItem> kv in proxies)
+            foreach (KeyValuePair<string, ClashProxies.ProxiesItem> kv in proxies)
             {
                 if (!Global.allowSelectType.Contains(kv.Value.type.ToLower()))
                 {
@@ -273,7 +273,7 @@ namespace clashN.ViewModels
                 return;
             }
 
-            proxies.TryGetValue(name, out ProxiesItem proxy);
+            proxies.TryGetValue(name, out ClashProxies.ProxiesItem proxy);
             if (proxy == null || proxy.all == null)
             {
                 return;
@@ -318,9 +318,9 @@ namespace clashN.ViewModels
             _proxyDetails.AddRange(lstDetails);
         }
 
-        private ProxiesItem TryGetProxy(string name)
+        private ClashProxies.ProxiesItem TryGetProxy(string name)
         {
-            proxies.TryGetValue(name, out ProxiesItem proxy2);
+            proxies.TryGetValue(name, out ClashProxies.ProxiesItem proxy2);
             if (proxy2 != null)
             {
                 return proxy2;
@@ -328,7 +328,7 @@ namespace clashN.ViewModels
             //from providers
             if (providers != null)
             {
-                foreach (KeyValuePair<string, ProvidersItem> kv in providers)
+                foreach (KeyValuePair<string, ClashProviders.ProvidersItem> kv in providers)
                 {
                     if (Global.proxyVehicleType.Contains(kv.Value.vehicleType.ToLower()))
                     {

@@ -1,6 +1,6 @@
-﻿using static clashN.Mode.ClashProxies;
+﻿using static ClashN.Mode.ClashProxies;
 
-namespace clashN.Mode
+namespace ClashN.Mode
 {
     public class ClashProviders
     {
@@ -9,7 +9,7 @@ namespace clashN.Mode
         public class ProvidersItem
         {
             public string name { get; set; }
-            public ProxiesItem[] proxies { get; set; }
+            public ClashProxies.ProxiesItem[] proxies { get; set; }
             public string type { get; set; }
             public string vehicleType { get; set; }
         }

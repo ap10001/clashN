@@ -1,10 +1,10 @@
-﻿using clashN.Mode;
-using clashN.Resx;
+﻿using ClashN.Resx;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using ClashN.Mode;
 
-namespace clashN.Handler
+namespace ClashN.Handler
 {
     /// <summary>
     /// core进程处理类

@@ -1,6 +1,4 @@
-using clashN.Base;
-using clashN.Handler;
-using clashN.Mode;
+using ClashN.Base;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -9,8 +7,10 @@ using Splat;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
+using ClashN.Handler;
+using ClashN.Mode;
 
-namespace clashN.ViewModels
+namespace ClashN.ViewModels
 {
     public class ConnectionsViewModel : ReactiveObject
     {

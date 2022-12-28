@@ -1,8 +1,8 @@
-﻿using clashN.Tool;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Threading;
+using ClashN.Tool;
 
-namespace clashN
+namespace ClashN
 {
     /// <summary>
     /// Interaction logic for App.xaml

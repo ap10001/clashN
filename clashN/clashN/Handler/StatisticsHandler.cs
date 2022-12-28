@@ -1,8 +1,8 @@
-﻿using clashN.Mode;
-using System.Net.WebSockets;
+﻿using System.Net.WebSockets;
 using System.Text;
+using ClashN.Mode;
 
-namespace clashN.Handler
+namespace ClashN.Handler
 {
     class StatisticsHandler
     {

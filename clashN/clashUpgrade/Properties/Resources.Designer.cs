@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace clashUpgrade.Properties {
+namespace ClashUpgrade.Properties {
     using System;
     
     

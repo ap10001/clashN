@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace clashN.Resx {
+namespace ClashN.Resx {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace clashN.Resx {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("clashN.Resx.ResUI", typeof(ResUI).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ClashN.Resx.ResUI", typeof(ResUI).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -1,7 +1,4 @@
-using clashN.Base;
-using clashN.Handler;
-using clashN.Mode;
-using clashN.Views;
+using ClashN.Base;
 using MaterialDesignColors;
 using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
@@ -14,9 +11,12 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Forms;
+using ClashN.Handler;
+using ClashN.Mode;
+using ClashN.Views;
 using Application = System.Windows.Application;
 
-namespace clashN.ViewModels
+namespace ClashN.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject
     {

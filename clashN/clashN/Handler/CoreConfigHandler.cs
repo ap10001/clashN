@@ -1,8 +1,8 @@
-﻿using clashN.Mode;
-using clashN.Resx;
+﻿using ClashN.Resx;
 using System.IO;
+using ClashN.Mode;
 
-namespace clashN.Handler
+namespace ClashN.Handler
 {
     /// <summary>
     /// Core配置文件处理类

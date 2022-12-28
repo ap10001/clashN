@@ -1,12 +1,12 @@
-using clashN.Resx;
-using clashN.ViewModels;
+using ClashN.Resx;
 using ReactiveUI;
 using Splat;
 using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Windows;
+using ClashN.ViewModels;
 
-namespace clashN.Views
+namespace ClashN.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

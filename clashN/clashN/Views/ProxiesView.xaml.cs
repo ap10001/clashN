@@ -1,10 +1,10 @@
-using clashN.ViewModels;
 using ReactiveUI;
 using Splat;
 using System.Reactive.Disposables;
 using System.Windows.Input;
+using ClashN.ViewModels;
 
-namespace clashN.Views
+namespace ClashN.Views
 {
     /// <summary>
     /// Interaction logic for ProxiesView.xaml

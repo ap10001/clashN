@@ -1,6 +1,6 @@
-﻿namespace clashN
+﻿namespace ClashN
 {
-    class Global
+    internal abstract class Global
     {
         #region 常量
 

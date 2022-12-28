@@ -1,5 +1,3 @@
-using clashN.Mode;
-using clashN.ViewModels;
 using ReactiveUI;
 using Splat;
 using System.Reactive.Disposables;
@@ -7,8 +5,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using ClashN.Mode;
+using ClashN.ViewModels;
 
-namespace clashN.Views
+namespace ClashN.Views
 {
     /// <summary>
     /// Interaction logic for ProfilesView.xaml

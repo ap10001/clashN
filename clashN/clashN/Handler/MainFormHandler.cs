@@ -1,6 +1,4 @@
-﻿using clashN.Base;
-using clashN.Mode;
-using clashN.Resx;
+﻿using ClashN.Resx;
 using NHotkey;
 using NHotkey.Wpf;
 using Splat;
@@ -8,9 +6,11 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Input;
-using static clashN.Mode.ClashProxies;
+using ClashN.Base;
+using ClashN.Mode;
+using static ClashN.Mode.ClashProxies;
 
-namespace clashN.Handler
+namespace ClashN.Handler
 {
     public sealed class MainFormHandler
     {
@@ -241,7 +241,7 @@ namespace clashN.Handler
                         return;
                     }
                     lstProxy = new List<ProxyModel>();
-                    foreach (KeyValuePair<string, ProxiesItem> kv in proxies)
+                    foreach (KeyValuePair<string, ClashProxies.ProxiesItem> kv in proxies)
                     {
                         if (Global.notAllowTestType.Contains(kv.Value.type.ToLower()))
                         {
@@ -296,7 +296,7 @@ namespace clashN.Handler
             });
         }
 
-        public List<ProxiesItem> GetClashProxyGroups()
+        public List<ClashProxies.ProxiesItem> GetClashProxyGroups()
         {
             try
             {
@@ -305,7 +305,7 @@ namespace clashN.Handler
                 {
                     return null;
                 }
-                return Utils.FromJson<List<ProxiesItem>>(Utils.ToJson(fileContent["proxy-groups"]));
+                return Utils.FromJson<List<ClashProxies.ProxiesItem>>(Utils.ToJson(fileContent["proxy-groups"]));
             }
             catch (Exception ex)
             {
