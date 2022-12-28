@@ -7,7 +7,7 @@
     <UseWPF>true</UseWPF>  
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationIcon>clashN.ico</ApplicationIcon>
+    <ApplicationIcon>ClashN.ico</ApplicationIcon>
 	<Copyright>Copyright © 2019-2022 (GPLv3)</Copyright>
 	<FileVersion>2.11</FileVersion>
   </PropertyGroup>
@@ -31,14 +31,14 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-        <None Remove="clashN.ico" />  
+        <None Remove="ClashN.ico" />  
         <AdditionalFiles Include="app.manifest" />
-        <EmbeddedResource Include="clashN.ico">
+        <EmbeddedResource Include="ClashN.ico">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
         <EmbeddedResource Include="Sample\SampleMixin.yaml" />
         <EmbeddedResource Include="Sample\SampleTun.yaml" />
-        <Resource Include="clashN.ico">
+        <Resource Include="ClashN.ico">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Resource> 
         <Compile Update="Resx\ResUI.Designer.cs">
@@ -54,4 +54,8 @@
           <Generator>PublicResXFileCodeGenerator</Generator>
         </EmbeddedResource>
     </ItemGroup>
+	
+	<ItemGroup>
+	  <_DeploymentManifestIconFile Remove="ClashN.ico" />
+	</ItemGroup>
 </Project>

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Windows;
 using ClashN.ViewModels;
+using ClashN.Tool;
 
 namespace ClashN.Views
 {

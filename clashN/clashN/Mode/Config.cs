@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using ClashN.Tool;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ClashN.Mode
@@ -128,7 +129,7 @@ namespace ClashN.Mode
         #region function
         public string GetSummary()
         {
-            string summary = string.Format("{0}", remarks);
+            var summary = string.Format("{0}", remarks);
             return summary;
         }
 

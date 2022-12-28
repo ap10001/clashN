@@ -1,3 +1,4 @@
+using ClashN.Tool;
 using ReactiveUI;
 using System.Windows;
 

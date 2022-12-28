@@ -22,7 +22,7 @@ namespace ClashN.Base
 
         public static bool IsWhiteSpace(this string value)
         {
-            foreach (char c in value)
+            foreach (var c in value)
             {
                 if (char.IsWhiteSpace(c)) continue;
 

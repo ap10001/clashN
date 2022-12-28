@@ -13,6 +13,7 @@ using System.Reactive;
 using ClashN.Handler;
 using ClashN.Mode;
 using ClashN.Views;
+using ClashN.Tool;
 
 namespace ClashN.ViewModels
 {
@@ -130,9 +131,9 @@ namespace ClashN.ViewModels
             //UI
             ColorModeDark = _config.uiItem.colorModeDark;
             _swatches.AddRange(new SwatchesProvider().Swatches);
-            if (!_config.uiItem.colorPrimaryName.IsNullOrEmpty())
+            if (!_config.uiItem.colorPrimaryName!.IsNullOrEmpty())
             {
-                SelectedSwatch = _swatches.FirstOrDefault(t => t.Name == _config.uiItem.colorPrimaryName);
+                SelectedSwatch = _swatches.FirstOrDefault(t => t.Name == _config.uiItem.colorPrimaryName)!;
             }
             CurrentLanguage = Utils.RegReadValue(Global.MyRegPath, Global.MyRegKeyLanguage, Global.Languages[0]);
 
@@ -164,7 +165,7 @@ namespace ClashN.ViewModels
                      if (_config.uiItem.colorPrimaryName != SelectedSwatch?.Name)
                      {
                          _config.uiItem.colorPrimaryName = SelectedSwatch?.Name;
-                         Locator.Current.GetService<MainWindowViewModel>()?.ChangePrimaryColor(SelectedSwatch.ExemplarHue.Color);
+                         Locator.Current.GetService<MainWindowViewModel>()?.ChangePrimaryColor(SelectedSwatch!.ExemplarHue.Color);
                          ConfigHandler.SaveConfig(ref _config);
                      }
                  });
@@ -233,7 +234,7 @@ namespace ClashN.ViewModels
             var address = Utils.GetConfigPath(Global.mixinConfigFileName);
             if (!File.Exists(address))
             {
-                string contents = Utils.GetEmbedText(Global.SampleMixin);
+                var contents = Utils.GetEmbedText(Global.SampleMixin);
                 if (!Utils.IsNullOrEmpty(contents))
                 {
                     File.WriteAllText(address, contents);

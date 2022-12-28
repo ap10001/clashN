@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using ClashN.Handler;
 using ClashN.Mode;
 using ClashN.Views;
+using ClashN.Tool;
 
 namespace ClashN.ViewModels
 {
@@ -44,7 +45,7 @@ namespace ClashN.ViewModels
             }
 
             _view = view;
-            CoreType = (SelectedSource.coreType ?? ECoreType.clash).ToString();
+            CoreType = (SelectedSource.coreType ?? ECoreType.Clash).ToString();
 
             BrowseProfileCmd = ReactiveCommand.Create(() =>
             {
@@ -65,7 +66,7 @@ namespace ClashN.ViewModels
 
         private void SaveProfile()
         {
-            string remarks = SelectedSource.remarks;
+            var remarks = SelectedSource.remarks;
             if (Utils.IsNullOrEmpty(remarks))
             {
                 _noticeHandler?.Enqueue(ResUI.PleaseFillRemarks);
@@ -97,7 +98,7 @@ namespace ClashN.ViewModels
                 item.enabled = SelectedSource.enabled;
                 item.enableConvert = SelectedSource.enableConvert;
             }
-            if (SelectedSource.enableTun && SelectedSource.coreType != ECoreType.clash_meta)
+            if (SelectedSource.enableTun && SelectedSource.coreType != ECoreType.ClashMeta)
             {
                 UI.ShowWarning(ResUI.TunModeCoreTip);
             }
@@ -116,7 +117,7 @@ namespace ClashN.ViewModels
 
         private void BrowseProfile()
         {
-            OpenFileDialog fileDialog = new OpenFileDialog
+            var fileDialog = new OpenFileDialog
             {
                 Multiselect = false,
                 Filter = "YAML|*.yaml;*.yml|All|*.*"
@@ -129,7 +130,7 @@ namespace ClashN.ViewModels
             {
                 return;
             }
-            string fileName = fileDialog.FileName;
+            var fileName = fileDialog.FileName;
             if (Utils.IsNullOrEmpty(fileName))
             {
                 return;

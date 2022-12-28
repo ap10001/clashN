@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using System.Text;
 using ClashN.Mode;
 using ClashN.Properties;
+using ClashN.Tool;
 using File = System.IO.File;
 
 namespace ClashN.Handler;

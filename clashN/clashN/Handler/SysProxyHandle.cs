@@ -44,8 +44,8 @@ namespace ClashN.Handler
 
             try
             {
-                int port = config.httpPort;
-                int socksPort = config.socksPort;
+                var port = config.httpPort;
+                var socksPort = config.socksPort;
                 if (port <= 0)
                 {
                     return false;
@@ -108,7 +108,7 @@ namespace ClashN.Handler
 
         public static void SetIEProxy(bool global, string strProxy, string strExceptions)
         {
-            string arguments = global
+            var arguments = global
                 ? $"global {strProxy} {strExceptions}"
                 : $"pac {strProxy}";
 
@@ -139,10 +139,10 @@ namespace ClashN.Handler
             // using event to avoid hanging when redirect standard output/error
             // ref: https://stackoverflow.com/questions/139593/processstartinfo-hanging-on-waitforexit-why
             // and http://blog.csdn.net/zhangweixing0/article/details/7356841
-            using (AutoResetEvent outputWaitHandle = new AutoResetEvent(false))
-            using (AutoResetEvent errorWaitHandle = new AutoResetEvent(false))
+            using (var outputWaitHandle = new AutoResetEvent(false))
+            using (var errorWaitHandle = new AutoResetEvent(false))
             {
-                using (Process process = new Process())
+                using (var process = new Process())
                 {
                     // Configure the process using the StartInfo properties.
                     process.StartInfo.FileName = Utils.GetTempPath("sysproxy.exe");
@@ -159,8 +159,8 @@ namespace ClashN.Handler
 
                     process.StartInfo.CreateNoWindow = true;
 
-                    StringBuilder output = new StringBuilder();
-                    StringBuilder error = new StringBuilder();
+                    var output = new StringBuilder();
+                    var error = new StringBuilder();
 
                     process.OutputDataReceived += (sender, e) =>
                     {
@@ -199,10 +199,10 @@ namespace ClashN.Handler
                         // log the arguments
                         throw new Exception(process.StartInfo.Arguments);
                     }
-                    string stderr = error.ToString();
-                    string stdout = output.ToString();
+                    var stderr = error.ToString();
+                    var stdout = output.ToString();
 
-                    int exitCode = process.ExitCode;
+                    var exitCode = process.ExitCode;
                     if (exitCode != (int)RET_ERRORS.RET_NO_ERROR)
                     {
                         throw new Exception(stderr);

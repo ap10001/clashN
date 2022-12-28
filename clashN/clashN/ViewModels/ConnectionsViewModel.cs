@@ -9,6 +9,7 @@ using System.Reactive.Linq;
 using System.Windows;
 using ClashN.Handler;
 using ClashN.Mode;
+using ClashN.Tool;
 
 namespace ClashN.ViewModels
 {

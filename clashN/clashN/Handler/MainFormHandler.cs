@@ -9,6 +9,7 @@ using System.Windows.Input;
 using ClashN.Base;
 using ClashN.Mode;
 using static ClashN.Mode.ClashProxies;
+using ClashN.Tool;
 
 namespace ClashN.Handler
 {
@@ -23,7 +24,7 @@ namespace ClashN.Handler
         {
             try
             {
-                int index = (int)config.sysProxyType;
+                var index = (int)config.sysProxyType;
 
                 //Load from local file
                 var fileName = Utils.GetPath($"NotifyIcon{index + 1}.ico");
@@ -54,14 +55,14 @@ namespace ClashN.Handler
 
         public void BackupGuiNConfig(Config config, bool auto = false)
         {
-            string fileName = $"guiNConfig_{DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss_fff")}.json";
+            var fileName = $"guiNConfig_{DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss_fff")}.json";
             if (auto)
             {
                 fileName = Utils.GetBackupPath(fileName);
             }
             else
             {
-                SaveFileDialog fileDialog = new SaveFileDialog
+                var fileDialog = new SaveFileDialog
                 {
                     FileName = fileName,
                     Filter = "guiNConfig|*.json",
@@ -227,7 +228,7 @@ namespace ClashN.Handler
             {
                 if (blAll)
                 {
-                    for (int i = 0; i < 5; i++)
+                    for (var i = 0; i < 5; i++)
                     {
                         if (LazyConfig.Instance.GetProxies() != null)
                         {

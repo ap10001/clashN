@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using ClashN.Mode;
+using ClashN.Tool;
 
 namespace ClashN.Handler
 {
@@ -74,7 +75,7 @@ namespace ClashN.Handler
         {
             RunPingSub((ServerTestItem it) =>
             {
-                long time = Utils.Ping(it.address);
+                var time = Utils.Ping(it.address);
 
                 _updateFunc(it.indexId, FormatOut(time, "ms"));
             });
@@ -84,7 +85,7 @@ namespace ClashN.Handler
         {
             RunPingSub((ServerTestItem it) =>
             {
-                int time = GetTcpingTime(it.address, it.port);
+                var time = GetTcpingTime(it.address, it.port);
 
                 _updateFunc(it.indexId, FormatOut(time, "ms"));
             });
@@ -95,16 +96,16 @@ namespace ClashN.Handler
         {
             try
             {
-                int httpPort = _config.httpPort;
+                var httpPort = _config.httpPort;
 
-                Task<int> t = Task.Run(() =>
+                var t = Task.Run(() =>
                 {
                     try
                     {
-                        WebProxy webProxy = new WebProxy(Global.Loopback, httpPort);
-                        int responseTime = -1;
-                        string status = GetRealPingTime(LazyConfig.Instance.GetConfig().constItem.speedPingTestUrl, webProxy, out responseTime);
-                        bool noError = Utils.IsNullOrEmpty(status);
+                        var webProxy = new WebProxy(Global.Loopback, httpPort);
+                        var responseTime = -1;
+                        var status = GetRealPingTime(LazyConfig.Instance.GetConfig().constItem.speedPingTestUrl, webProxy, out responseTime);
+                        var noError = Utils.IsNullOrEmpty(status);
                         return noError ? responseTime : -1;
                     }
                     catch (Exception ex)
@@ -124,23 +125,23 @@ namespace ClashN.Handler
 
         private int GetTcpingTime(string url, int port)
         {
-            int responseTime = -1;
+            var responseTime = -1;
 
             try
             {
-                if (!IPAddress.TryParse(url, out IPAddress ipAddress))
+                if (!IPAddress.TryParse(url, out var ipAddress))
                 {
-                    IPHostEntry ipHostInfo = System.Net.Dns.GetHostEntry(url);
+                    var ipHostInfo = System.Net.Dns.GetHostEntry(url);
                     ipAddress = ipHostInfo.AddressList[0];
                 }
 
-                Stopwatch timer = new Stopwatch();
+                var timer = new Stopwatch();
                 timer.Start();
 
-                IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
-                Socket clientSocket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                var endPoint = new IPEndPoint(ipAddress, port);
+                var clientSocket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-                IAsyncResult result = clientSocket.BeginConnect(endPoint, null, null);
+                var result = clientSocket.BeginConnect(endPoint, null, null);
                 if (!result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5)))
                     throw new TimeoutException("connect timeout (5s): " + url);
                 clientSocket.EndConnect(result);
@@ -158,18 +159,18 @@ namespace ClashN.Handler
 
         private string GetRealPingTime(string url, WebProxy webProxy, out int responseTime)
         {
-            string msg = string.Empty;
+            var msg = string.Empty;
             responseTime = -1;
             try
             {
-                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+                var myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 myHttpWebRequest.Timeout = 5000;
                 myHttpWebRequest.Proxy = webProxy;//new WebProxy(Global.Loopback, Global.httpPort);
 
-                Stopwatch timer = new Stopwatch();
+                var timer = new Stopwatch();
                 timer.Start();
 
-                HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
+                var myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
                 if (myHttpWebResponse.StatusCode != HttpStatusCode.OK
                     && myHttpWebResponse.StatusCode != HttpStatusCode.NoContent)
                 {

@@ -15,6 +15,7 @@ using ClashN.Handler;
 using ClashN.Mode;
 using ClashN.Views;
 using Application = System.Windows.Application;
+using ClashN.Tool;
 
 namespace ClashN.ViewModels
 {
@@ -192,7 +193,7 @@ namespace ClashN.ViewModels
         {
             Application.Current.Dispatcher.Invoke((Action)(() =>
             {
-                string clipboardData = Utils.GetClipboardData();
+                var clipboardData = Utils.GetClipboardData();
                 if (state != null)
                 {
                     if (Utils.IsNullOrEmpty(clipboardData) || !clipboardData.StartsWith(Global.clashProtocol))

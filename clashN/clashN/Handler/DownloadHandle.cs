@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Sockets;
 using ClashN.Base;
+using ClashN.Tool;
 
 namespace ClashN.Handler
 {
@@ -47,7 +48,7 @@ namespace ClashN.Handler
                 {
                     if (UpdateCompleted != null)
                     {
-                        string msg = string.Format("...{0}%", value);
+                        var msg = string.Format("...{0}%", value);
                         UpdateCompleted(this, new ResultEventArgs(value > 100 ? true : false, msg));
                     }
                 };
@@ -87,7 +88,7 @@ namespace ClashN.Handler
                 }
                 client.DefaultRequestHeaders.UserAgent.TryParseAdd(userAgent);
 
-                Uri uri = new Uri(url);
+                var uri = new Uri(url);
                 //Authorization Header
                 if (!Utils.IsNullOrEmpty(uri.UserInfo))
                 {
@@ -115,14 +116,14 @@ namespace ClashN.Handler
         public async Task<string> UrlRedirectAsync(string url, bool blProxy)
         {
             Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
-            SocketsHttpHandler webRequestHandler = new SocketsHttpHandler
+            var webRequestHandler = new SocketsHttpHandler
             {
                 AllowAutoRedirect = false,
                 Proxy = GetWebProxy(blProxy)
             };
-            HttpClient client = new HttpClient(webRequestHandler);
+            var client = new HttpClient(webRequestHandler);
 
-            HttpResponseMessage response = await client.GetAsync(url);
+            var response = await client.GetAsync(url);
             if (response.StatusCode.ToString() == "Redirect")
             {
                 return response.Headers.Location.ToString();
@@ -154,8 +155,8 @@ namespace ClashN.Handler
             Socket sock = null;
             try
             {
-                IPAddress ipa = IPAddress.Parse(ip);
-                IPEndPoint point = new IPEndPoint(ipa, port);
+                var ipa = IPAddress.Parse(ip);
+                var point = new IPEndPoint(ipa, port);
                 sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 sock.Connect(point);
                 return true;

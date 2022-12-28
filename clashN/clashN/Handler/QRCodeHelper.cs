@@ -13,10 +13,10 @@ namespace ClashN.Handler
         {
             try
             {
-                QRCodeGenerator qrGenerator = new QRCodeGenerator();
-                QRCodeData qrCodeData = qrGenerator.CreateQrCode(strContent, QRCodeGenerator.ECCLevel.H);
-                XamlQRCode qrCode = new XamlQRCode(qrCodeData);
-                DrawingImage qrCodeAsXaml = qrCode.GetGraphic(40);
+                var qrGenerator = new QRCodeGenerator();
+                var qrCodeData = qrGenerator.CreateQrCode(strContent, QRCodeGenerator.ECCLevel.H);
+                var qrCode = new XamlQRCode(qrCodeData);
+                var qrCodeAsXaml = qrCode.GetGraphic(40);
                 return qrCodeAsXaml;
             }
             catch

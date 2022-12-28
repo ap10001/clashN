@@ -9,12 +9,11 @@ namespace ClashN
     /// </summary>
     public partial class App : Application
     {
-        public static EventWaitHandle ProgramStarted;
+        public static EventWaitHandle? ProgramStarted;
 
         public App()
         {
             // Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
-
 
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -27,12 +26,12 @@ namespace ClashN
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
-            foreach (string arg in e.Args)
+            foreach (var arg in e.Args)
             {
                 Utils.SetClipboardData(arg);
             }
 
-            ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, "ProgramStartedEvent", out bool bCreatedNew);
+            ProgramStarted = new EventWaitHandle(false, EventResetMode.AutoReset, "ProgramStartedEvent", out var bCreatedNew);
             if (!bCreatedNew)
             {
                 ProgramStarted.Set();
@@ -43,10 +42,10 @@ namespace ClashN
             Global.processJob = new Job();
 
             Logging.Setup();
-            Utils.SaveLog($"clashN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
+            Utils.SaveLog($"ClashN start up | {Utils.GetVersion()} | {Utils.GetExePath()}");
             Logging.ClearLogs();
 
-            string lang = Utils.RegReadValue(Global.MyRegPath, Global.MyRegKeyLanguage, Global.Languages[0]);
+            var lang = Utils.RegReadValue(Global.MyRegPath, Global.MyRegKeyLanguage, Global.Languages[0]);
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
 
             base.OnStartup(e);
@@ -66,7 +65,7 @@ namespace ClashN
             }
         }
 
-        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
         {
             Utils.SaveLog("TaskScheduler_UnobservedTaskException", e.Exception);
         }

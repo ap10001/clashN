@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using ClashN.Mode;
+using ClashN.Tool;
 
 namespace ClashN.Handler
 {
@@ -49,9 +50,9 @@ namespace ClashN.Handler
 
                         try
                         {
-                            string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
+                            var fileName = Utils.GetTempPath(Utils.GetDownloadFileName(url));
                             fileName = Utils.UrlEncode(fileName);
-                            Process process = new Process
+                            var process = new Process
                             {
                                 StartInfo = new ProcessStartInfo
                                 {
@@ -97,7 +98,7 @@ namespace ClashN.Handler
                 }
             };
             _updateFunc(false, string.Format(ResUI.MsgStartUpdating, "clashN"));
-            CheckUpdateAsync(ECoreType.clashN);
+            CheckUpdateAsync(ECoreType.ClashN);
         }
 
 
@@ -173,7 +174,7 @@ namespace ClashN.Handler
             Task.Run(async () =>
             {
                 //Turn off system proxy
-                bool bSysProxyType = false;
+                var bSysProxyType = false;
                 if (!blProxy && config.sysProxyType == ESysProxyType.ForcedChange)
                 {
                     bSysProxyType = true;
@@ -188,11 +189,11 @@ namespace ClashN.Handler
                 }
                 foreach (var item in profileItems)
                 {
-                    string indexId = item.indexId.TrimEx();
-                    string url = item.url.TrimEx();
-                    string userAgent = item.userAgent.TrimEx();
-                    string groupId = item.groupId.TrimEx();
-                    string hashCode = $"{item.remarks}->";
+                    var indexId = item.indexId.TrimEx();
+                    var url = item.url.TrimEx();
+                    var userAgent = item.userAgent.TrimEx();
+                    var groupId = item.groupId.TrimEx();
+                    var hashCode = $"{item.remarks}->";
                     if (item.enabled == false || Utils.IsNullOrEmpty(indexId) || Utils.IsNullOrEmpty(url))
                     {
                         _updateFunc(false, $"{hashCode}{ResUI.MsgSkipSubscriptionUpdate}");
@@ -233,7 +234,7 @@ namespace ClashN.Handler
                             _updateFunc(false, $"{hashCode}{result}");
                         }
 
-                        int ret = ConfigHandler.AddBatchProfiles(ref config, result.Item1, indexId, groupId);
+                        var ret = ConfigHandler.AddBatchProfiles(ref config, result.Item1, indexId, groupId);
                         if (ret == 0)
                         {
                             item.updateTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
@@ -309,10 +310,10 @@ namespace ClashN.Handler
 
                         try
                         {
-                            string fileName = Utils.GetPath(Utils.GetDownloadFileName(url));
+                            var fileName = Utils.GetPath(Utils.GetDownloadFileName(url));
                             if (File.Exists(fileName))
                             {
-                                string targetPath = Utils.GetPath($"{geoName}.dat");
+                                var targetPath = Utils.GetPath($"{geoName}.dat");
                                 if (File.Exists(targetPath))
                                 {
                                     File.Delete(targetPath);
@@ -347,7 +348,7 @@ namespace ClashN.Handler
             try
             {
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
-                string url = coreInfo.coreLatestUrl;
+                var url = coreInfo.coreLatestUrl;
 
                 var result = await (new DownloadHandle()).UrlRedirectAsync(url, true);
                 if (!Utils.IsNullOrEmpty(result))
@@ -379,10 +380,10 @@ namespace ClashN.Handler
             try
             {
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
-                string filePath = string.Empty;
-                foreach (string name in coreInfo.coreExes)
+                var filePath = string.Empty;
+                foreach (var name in coreInfo.coreExes)
                 {
-                    string vName = string.Format("{0}.exe", name);
+                    var vName = string.Format("{0}.exe", name);
                     vName = Utils.GetBinPath(vName, coreInfo.coreType);
                     if (File.Exists(vName))
                     {
@@ -392,11 +393,11 @@ namespace ClashN.Handler
                 }
                 if (Utils.IsNullOrEmpty(filePath))
                 {
-                    string msg = string.Format(ResUI.NotFoundCore, @"");
+                    var msg = string.Format(ResUI.NotFoundCore, @"");
                     return "";
                 }
 
-                Process p = new Process();
+                var p = new Process();
                 p.StartInfo.FileName = filePath;
                 p.StartInfo.Arguments = "-v";
                 p.StartInfo.WorkingDirectory = Utils.StartupPath();
@@ -406,8 +407,8 @@ namespace ClashN.Handler
                 p.StartInfo.StandardOutputEncoding = Encoding.UTF8;
                 p.Start();
                 p.WaitForExit(5000);
-                string echo = p.StandardOutput.ReadToEnd();
-                string version = Regex.Match(echo, $"v[0-9.]+").Groups[0].Value;
+                var echo = p.StandardOutput.ReadToEnd();
+                var version = Regex.Match(echo, $"v[0-9.]+").Groups[0].Value;
                 return version;
             }
             catch (Exception ex)
@@ -421,13 +422,13 @@ namespace ClashN.Handler
         {
             try
             {
-                string version = redirectUrl.Substring(redirectUrl.LastIndexOf("/", StringComparison.Ordinal) + 1);
+                var version = redirectUrl.Substring(redirectUrl.LastIndexOf("/", StringComparison.Ordinal) + 1);
                 var coreInfo = LazyConfig.Instance.GetCoreInfo(type);
 
                 string curVersion;
                 string message;
                 string url;
-                if (type == ECoreType.clash)
+                if (type == ECoreType.Clash)
                 {
                     curVersion = getCoreVersion(type);
                     message = string.Format(ResUI.IsLatestCore, curVersion);
@@ -440,7 +441,7 @@ namespace ClashN.Handler
                         url = string.Format(coreInfo.coreDownloadUrl32, version);
                     }
                 }
-                else if (type == ECoreType.clash_meta)
+                else if (type == ECoreType.ClashMeta)
                 {
                     curVersion = getCoreVersion(type);
                     message = string.Format(ResUI.IsLatestCore, curVersion);
@@ -453,7 +454,7 @@ namespace ClashN.Handler
                         url = string.Format(coreInfo.coreDownloadUrl32, version);
                     }
                 }
-                else if (type == ECoreType.clashN)
+                else if (type == ECoreType.ClashN)
                 {
                     curVersion = FileVersionInfo.GetVersionInfo(Utils.GetExePath()).FileVersion.ToString();
                     message = string.Format(ResUI.IsLatestN, curVersion);
@@ -481,7 +482,7 @@ namespace ClashN.Handler
 
         private void askToDownload(DownloadHandle downloadHandle, string url, bool blAsk)
         {
-            bool blDownload = false;
+            var blDownload = false;
             if (blAsk)
             {
                 if (UI.ShowYesNo(string.Format(ResUI.DownloadYesNo, url)) == DialogResult.Yes)

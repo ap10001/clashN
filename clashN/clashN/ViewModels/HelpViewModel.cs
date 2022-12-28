@@ -28,11 +28,11 @@ namespace ClashN.ViewModels
             });
             CheckUpdateClashCoreCmd = ReactiveCommand.Create(() =>
             {
-                CheckUpdateCore(ECoreType.clash);
+                CheckUpdateCore(ECoreType.Clash);
             });
             CheckUpdateClashMetaCoreCmd = ReactiveCommand.Create(() =>
             {
-                CheckUpdateCore(ECoreType.clash_meta);
+                CheckUpdateCore(ECoreType.ClashMeta);
             });
         }
 
@@ -57,8 +57,8 @@ namespace ClashN.ViewModels
                 {
                     Locator.Current.GetService<MainWindowViewModel>()?.CloseCore();
 
-                    string fileName = Utils.GetTempPath(Utils.GetDownloadFileName(msg));
-                    string toPath = Utils.GetBinPath("", type);
+                    var fileName = Utils.GetTempPath(Utils.GetDownloadFileName(msg));
+                    var toPath = Utils.GetBinPath("", type);
                     if (FileManager.ZipExtractToFile(fileName, toPath, "") == false)
                     {
                         Global.reloadCore = true;

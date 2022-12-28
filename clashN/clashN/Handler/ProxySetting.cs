@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using ClashN.Tool;
+using Microsoft.Win32;
 using System.Runtime.InteropServices;
 
 namespace ClashN.Handler
@@ -12,9 +13,9 @@ namespace ClashN.Handler
 
         public static bool SetProxy(string strProxy, string exceptions, int type)
         {
-            InternetPerConnOptionList list = new InternetPerConnOptionList();
+            var list = new InternetPerConnOptionList();
 
-            int optionCount = 1;
+            var optionCount = 1;
             if (type == 1)
             {
                 optionCount = 1;
@@ -24,8 +25,8 @@ namespace ClashN.Handler
                 optionCount = Utils.IsNullOrEmpty(exceptions) ? 2 : 3;
             }
 
-            int m_Int = (int)PerConnFlags.PROXY_TYPE_DIRECT;
-            PerConnOption m_Option = PerConnOption.INTERNET_PER_CONN_FLAGS;
+            var m_Int = (int)PerConnFlags.PROXY_TYPE_DIRECT;
+            var m_Option = PerConnOption.INTERNET_PER_CONN_FLAGS;
             if (type == 2)
             {
                 m_Int = (int)(PerConnFlags.PROXY_TYPE_DIRECT | PerConnFlags.PROXY_TYPE_PROXY);
@@ -38,7 +39,7 @@ namespace ClashN.Handler
             }
 
             //int optionCount = Utils.IsNullOrEmpty(strProxy) ? 1 : (Utils.IsNullOrEmpty(exceptions) ? 2 : 3);
-            InternetConnectionOption[] options = new InternetConnectionOption[optionCount];
+            var options = new InternetConnectionOption[optionCount];
             // USE a proxy server ...
             options[0].m_Option = PerConnOption.INTERNET_PER_CONN_FLAGS;
             //options[0].m_Value.m_Int = (int)((optionCount < 2) ? PerConnFlags.PROXY_TYPE_DIRECT : (PerConnFlags.PROXY_TYPE_DIRECT | PerConnFlags.PROXY_TYPE_PROXY));
@@ -63,20 +64,20 @@ namespace ClashN.Handler
             list.dwOptionError = 0;
 
 
-            int optSize = Marshal.SizeOf(typeof(InternetConnectionOption));
+            var optSize = Marshal.SizeOf(typeof(InternetConnectionOption));
             // make a pointer out of all that ...
-            IntPtr optionsPtr = Marshal.AllocCoTaskMem(optSize * options.Length);
+            var optionsPtr = Marshal.AllocCoTaskMem(optSize * options.Length);
             // copy the array over into that spot in memory ...
-            for (int i = 0; i < options.Length; ++i)
+            for (var i = 0; i < options.Length; ++i)
             {
                 if (Environment.Is64BitOperatingSystem)
                 {
-                    IntPtr opt = new IntPtr(optionsPtr.ToInt64() + (i * optSize));
+                    var opt = new IntPtr(optionsPtr.ToInt64() + (i * optSize));
                     Marshal.StructureToPtr(options[i], opt, false);
                 }
                 else
                 {
-                    IntPtr opt = new IntPtr(optionsPtr.ToInt32() + (i * optSize));
+                    var opt = new IntPtr(optionsPtr.ToInt32() + (i * optSize));
                     Marshal.StructureToPtr(options[i], opt, false);
                 }
             }
@@ -84,11 +85,11 @@ namespace ClashN.Handler
             list.options = optionsPtr;
 
             // and then make a pointer out of the whole list
-            IntPtr ipcoListPtr = Marshal.AllocCoTaskMem((int)list.dwSize);
+            var ipcoListPtr = Marshal.AllocCoTaskMem((int)list.dwSize);
             Marshal.StructureToPtr(list, ipcoListPtr, false);
 
             // and finally, call the API method!
-            int returnvalue = NativeMethods.InternetSetOption(IntPtr.Zero,
+            var returnvalue = NativeMethods.InternetSetOption(IntPtr.Zero,
                InternetOption.INTERNET_OPTION_PER_CONNECTION_OPTION,
                ipcoListPtr, list.dwSize) ? -1 : 0;
             if (returnvalue == 0)
@@ -189,7 +190,7 @@ namespace ClashN.Handler
         //判断是否使用代理
         public static bool UsedProxy()
         {
-            RegistryKey rk = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true);
+            var rk = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true);
             if (rk.GetValue("ProxyEnable").ToString() == "1")
             {
                 rk.Close();
@@ -204,8 +205,8 @@ namespace ClashN.Handler
         //获得代理的IP和端口
         public static string GetProxyProxyServer()
         {
-            RegistryKey rk = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true);
-            string ProxyServer = rk.GetValue("ProxyServer").ToString();
+            var rk = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true);
+            var ProxyServer = rk.GetValue("ProxyServer").ToString();
             rk.Close();
             return ProxyServer;
 

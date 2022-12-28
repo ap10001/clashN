@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using ClashN.Tool;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -27,9 +28,9 @@ namespace ClashN.Base
             }
             else
             {
-                HttpClientHelper httpClientHelper = new HttpClientHelper();
+                var httpClientHelper = new HttpClientHelper();
 
-                HttpClientHandler handler = new HttpClientHandler() { UseCookies = false };
+                var handler = new HttpClientHandler() { UseCookies = false };
                 httpClientHelper.httpClient = new HttpClient(handler);
                 return httpClientHelper;
             }
@@ -42,7 +43,7 @@ namespace ClashN.Base
             }
             try
             {
-                HttpResponseMessage response = await httpClient.GetAsync(url);
+                var response = await httpClient.GetAsync(url);
 
                 return await response.Content.ReadAsStringAsync();
             }
@@ -57,7 +58,7 @@ namespace ClashN.Base
             {
                 return (null, null);
             }
-            HttpResponseMessage response = await client.GetAsync(url, token);
+            var response = await client.GetAsync(url, token);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(string.Format("The request returned with HTTP status code {0}", response.StatusCode));

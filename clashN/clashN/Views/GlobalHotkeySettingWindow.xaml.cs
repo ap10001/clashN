@@ -5,6 +5,7 @@ using System.Windows.Input;
 using ClashN.Handler;
 using ClashN.Mode;
 using Forms = System.Windows.Forms;
+using ClashN.Tool;
 
 namespace ClashN.Views
 {
@@ -74,7 +75,7 @@ namespace ClashN.Views
 
         private void BindingData(int index)
         {
-            for (int k = 0; k < lstKey.Count; k++)
+            for (var k = 0; k < lstKey.Count; k++)
             {
                 if (index >= 0 && index != k)
                 {

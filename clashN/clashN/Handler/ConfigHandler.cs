@@ -23,7 +23,7 @@ namespace ClashN.Handler
         public static int LoadConfig(ref Config config)
         {
             //载入配置文件 
-            string result = Utils.LoadResource(Utils.GetConfigPath(configRes));
+            var result = Utils.LoadResource(Utils.GetConfigPath(configRes));
             if (!Utils.IsNullOrEmpty(result))
             {
                 //转成Json
@@ -115,9 +115,9 @@ namespace ClashN.Handler
             {
                 Global.reloadCore = true;
 
-                for (int i = 0; i < config.profileItems.Count; i++)
+                for (var i = 0; i < config.profileItems.Count; i++)
                 {
-                    ProfileItem profileItem = config.profileItems[i];
+                    var profileItem = config.profileItems[i];
 
                     if (Utils.IsNullOrEmpty(profileItem.indexId))
                     {
@@ -126,7 +126,7 @@ namespace ClashN.Handler
                 }
             }
 
-            LazyConfig.Instance.SetConfig(ref config);
+            LazyConfig.Instance.SetConfig(config: ref config!);
             return 0;
         }
         /// <summary>
@@ -211,7 +211,7 @@ namespace ClashN.Handler
         {
             foreach (var item in indexs)
             {
-                ProfileItem profileItem = Utils.DeepCopy(item);
+                var profileItem = Utils.DeepCopy(item);
                 profileItem.indexId = string.Empty;
                 profileItem.remarks = string.Format("{0}-clone", item.remarks);
 
@@ -300,13 +300,13 @@ namespace ClashN.Handler
         public static int MoveProfile(ref Config config, int index, EMove eMove, int pos = -1)
         {
             List<ProfileItem> lstProfile = config.profileItems.OrderBy(it => it.sort).ToList();
-            int count = lstProfile.Count;
+            var count = lstProfile.Count;
             if (index < 0 || index > lstProfile.Count - 1)
             {
                 return -1;
             }
 
-            for (int i = 0; i < lstProfile.Count; i++)
+            for (var i = 0; i < lstProfile.Count; i++)
             {
                 lstProfile[i].sort = (i + 1) * 10;
             }
@@ -371,7 +371,7 @@ namespace ClashN.Handler
                 return -1;
             }
 
-            string newFileName = profileItem.address;
+            var newFileName = profileItem.address;
             if (Utils.IsNullOrEmpty(newFileName))
             {
                 var ext = ".yaml";
@@ -411,7 +411,7 @@ namespace ClashN.Handler
                 return -1;
             }
             var ext = Path.GetExtension(fileName);
-            string newFileName = string.Format("{0}{1}", Utils.GetGUID(), ext);
+            var newFileName = string.Format("{0}{1}", Utils.GetGUID(), ext);
 
             try
             {
@@ -491,7 +491,7 @@ namespace ClashN.Handler
             {
                 lstProfile = items.OrderByDescending(propertyName).ToList();
             }
-            for (int i = 0; i < lstProfile.Count; i++)
+            for (var i = 0; i < lstProfile.Count; i++)
             {
                 lstProfile[i].sort = (i + 1) * 10;
             }
@@ -560,11 +560,11 @@ namespace ClashN.Handler
             //maybe url
             if (Utils.IsNullOrEmpty(indexId) && (clipboardData.StartsWith(Global.httpsProtocol) || clipboardData.StartsWith(Global.httpProtocol)))
             {
-                ProfileItem item = new ProfileItem()
+                var item = new ProfileItem()
                 {
                     groupId = groupId,
                     url = clipboardData,
-                    coreType = ECoreType.clash,
+                    coreType = ECoreType.Clash,
                     address = string.Empty,
                     enabled = true,
                     remarks = "clash_subscription"
@@ -576,17 +576,17 @@ namespace ClashN.Handler
             //maybe clashProtocol
             if (Utils.IsNullOrEmpty(indexId) && (clipboardData.StartsWith(Global.clashProtocol)))
             {
-                Uri url = new Uri(clipboardData);
+                var url = new Uri(clipboardData);
                 if (url.Host == "install-config")
                 {
                     var query = HttpUtility.ParseQueryString(url.Query);
                     if (!Utils.IsNullOrEmpty(query["url"] ?? ""))
                     {
-                        ProfileItem item = new ProfileItem()
+                        var item = new ProfileItem()
                         {
                             groupId = groupId,
-                            url = query["url"],
-                            coreType = ECoreType.clash,
+                            url = query["url"]!,
+                            coreType = ECoreType.Clash,
                             address = string.Empty,
                             enabled = true,
                             remarks = "clash_subscription"
@@ -600,11 +600,11 @@ namespace ClashN.Handler
             //maybe file
             if (File.Exists(clipboardData))
             {
-                ProfileItem item = new ProfileItem()
+                var item = new ProfileItem()
                 {
                     groupId = groupId,
                     url = "",
-                    coreType = ECoreType.clash,
+                    coreType = ECoreType.Clash,
                     address = string.Empty,
                     enabled = false,
                     remarks = "clash_local_file"

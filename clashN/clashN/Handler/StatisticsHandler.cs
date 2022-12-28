@@ -1,6 +1,7 @@
 ﻿using System.Net.WebSockets;
 using System.Text;
 using ClashN.Mode;
+using ClashN.Tool;
 
 namespace ClashN.Handler
 {
@@ -107,7 +108,7 @@ namespace ClashN.Handler
                             if (!Utils.IsNullOrEmpty(result))
                             {
                                 var serverStatItem = config_.GetProfileItem(config_.indexId);
-                                ParseOutput(result, out ulong up, out ulong down);
+                                ParseOutput(result, out var up, out var down);
                                 if (up + down > 0)
                                 {
                                     serverStatItem.uploadRemote += up;

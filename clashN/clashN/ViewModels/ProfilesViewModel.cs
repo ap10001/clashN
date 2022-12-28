@@ -13,6 +13,7 @@ using ClashN.Handler;
 using ClashN.Mode;
 using ClashN.Views;
 using Application = System.Windows.Application;
+using ClashN.Tool;
 
 namespace ClashN.ViewModels
 {
@@ -186,7 +187,7 @@ namespace ClashN.ViewModels
         {
             Locator.Current.GetService<MainWindowViewModel>()?.ShowHideWindow(false);
 
-            string result = await Task.Run(() =>
+            var result = await Task.Run(() =>
             {
                 return Utils.ScanScreen();
             });
@@ -199,7 +200,7 @@ namespace ClashN.ViewModels
             }
             else
             {
-                int ret = ConfigHandler.AddBatchProfiles(ref _config, result, "", "");
+                var ret = ConfigHandler.AddBatchProfiles(ref _config, result, "", "");
                 if (ret == 0)
                 {
                     RefreshProfiles();
@@ -209,12 +210,12 @@ namespace ClashN.ViewModels
         }
         public void AddProfilesViaClipboard(bool bClear)
         {
-            string clipboardData = Utils.GetClipboardData();
+            var clipboardData = Utils.GetClipboardData();
             if (Utils.IsNullOrEmpty(clipboardData))
             {
                 return;
             }
-            int ret = ConfigHandler.AddBatchProfiles(ref _config, clipboardData, "", "");
+            var ret = ConfigHandler.AddBatchProfiles(ref _config, clipboardData, "", "");
             if (ret == 0)
             {
                 if (bClear)

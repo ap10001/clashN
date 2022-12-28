@@ -12,6 +12,7 @@ using ClashN.Handler;
 using ClashN.Mode;
 using static ClashN.Mode.ClashProviders;
 using static ClashN.Mode.ClashProxies;
+using ClashN.Tool;
 
 namespace ClashN.ViewModels
 {
@@ -273,7 +274,7 @@ namespace ClashN.ViewModels
                 return;
             }
 
-            proxies.TryGetValue(name, out ClashProxies.ProxiesItem proxy);
+            proxies.TryGetValue(name, out var proxy);
             if (proxy == null || proxy.all == null)
             {
                 return;
@@ -288,7 +289,7 @@ namespace ClashN.ViewModels
                 {
                     continue;
                 }
-                int delay = -1;
+                var delay = -1;
                 if (proxy2.history.Count > 0)
                 {
                     delay = proxy2.history[proxy2.history.Count - 1].delay;
@@ -320,7 +321,7 @@ namespace ClashN.ViewModels
 
         private ClashProxies.ProxiesItem TryGetProxy(string name)
         {
-            proxies.TryGetValue(name, out ClashProxies.ProxiesItem proxy2);
+            proxies.TryGetValue(name, out var proxy2);
             if (proxy2 != null)
             {
                 return proxy2;

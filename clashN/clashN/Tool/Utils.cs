@@ -29,7 +29,7 @@ using ZXing.QrCode;
 using ZXing.Windows.Compatibility;
 using Formatting = Newtonsoft.Json.Formatting;
 
-namespace ClashN
+namespace ClashN.Tool
 {
     class Utils
     {
@@ -43,13 +43,13 @@ namespace ClashN
         /// <returns></returns>
         public static string GetEmbedText(string res)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
             try
             {
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                using (Stream stream = assembly.GetManifestResourceStream(res))
-                using (StreamReader reader = new StreamReader(stream))
+                var assembly = Assembly.GetExecutingAssembly();
+                using (var stream = assembly.GetManifestResourceStream(res))
+                using (var reader = new StreamReader(stream))
                 {
                     result = reader.ReadToEnd();
                 }
@@ -68,11 +68,11 @@ namespace ClashN
         /// <returns></returns>
         public static string LoadResource(string res)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
             try
             {
-                using (StreamReader reader = new StreamReader(res))
+                using (var reader = new StreamReader(res))
                 {
                     result = reader.ReadToEnd();
                 }
@@ -94,7 +94,7 @@ namespace ClashN
         {
             try
             {
-                T obj = JsonConvert.DeserializeObject<T>(strJson);
+                var obj = JsonConvert.DeserializeObject<T>(strJson);
                 return obj;
             }
             catch
@@ -108,13 +108,13 @@ namespace ClashN
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string ToJson(Object obj)
+        public static string ToJson(object obj)
         {
-            string result = string.Empty;
+            var result = string.Empty;
             try
             {
                 result = JsonConvert.SerializeObject(obj,
-                                           Newtonsoft.Json.Formatting.Indented,
+                                           Formatting.Indented,
                                            new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             }
             catch (Exception ex)
@@ -130,17 +130,17 @@ namespace ClashN
         /// <param name="obj"></param>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static int ToJsonFile(Object obj, string filePath, bool nullValue = true)
+        public static int ToJsonFile(object obj, string filePath, bool nullValue = true)
         {
             int result;
             try
             {
-                using (StreamWriter file = File.CreateText(filePath))
+                using (var file = File.CreateText(filePath))
                 {
                     JsonSerializer serializer;
                     if (nullValue)
                     {
-                        serializer = new JsonSerializer() { Formatting = Newtonsoft.Json.Formatting.Indented };
+                        serializer = new JsonSerializer() { Formatting = Formatting.Indented };
                     }
                     else
                     {
@@ -163,7 +163,7 @@ namespace ClashN
         {
             try
             {
-                JObject obj = JObject.Parse(strJson);
+                var obj = JObject.Parse(strJson);
                 return obj;
             }
             catch (Exception ex)
@@ -233,7 +233,7 @@ namespace ClashN
         {
             try
             {
-                byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+                var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
                 return Convert.ToBase64String(plainTextBytes);
             }
             catch (Exception ex)
@@ -263,7 +263,7 @@ namespace ClashN
                     plainText = plainText.PadRight(plainText.Length + 4 - plainText.Length % 4, '=');
                 }
 
-                byte[] data = Convert.FromBase64String(plainText);
+                var data = Convert.FromBase64String(plainText);
                 return Encoding.UTF8.GetString(data);
             }
             catch (Exception ex)
@@ -307,7 +307,7 @@ namespace ClashN
         {
             try
             {
-                return (obj == null ? string.Empty : obj.ToString());
+                return obj == null ? string.Empty : obj.ToString();
             }
             catch (Exception ex)
             {
@@ -325,16 +325,16 @@ namespace ClashN
         /// <param name="unit">单位</param>
         public static void ToHumanReadable(ulong amount, out double result, out string unit)
         {
-            uint factor = 1024u;
-            ulong KBs = amount / factor;
+            var factor = 1024u;
+            var KBs = amount / factor;
             if (KBs > 0)
             {
                 // multi KB
-                ulong MBs = KBs / factor;
+                var MBs = KBs / factor;
                 if (MBs > 0)
                 {
                     // multi MB
-                    ulong GBs = MBs / factor;
+                    var GBs = MBs / factor;
                     if (GBs > 0)
                     {
                         // multi GB
@@ -367,7 +367,7 @@ namespace ClashN
 
         public static string HumanFy(ulong amount)
         {
-            ToHumanReadable(amount, out double result, out string unit);
+            ToHumanReadable(amount, out var result, out var unit);
             return $"{string.Format("{0:f1}", result)} {unit}";
         }
 
@@ -395,7 +395,7 @@ namespace ClashN
         {
             try
             {
-                int var1 = ToInt(oText);
+                var var1 = ToInt(oText);
                 return true;
             }
             catch (Exception ex)
@@ -453,7 +453,7 @@ namespace ClashN
 
 
             //模式字符串
-            string pattern = @"^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$";
+            var pattern = @"^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$";
 
             //验证
             return IsMatch(ip, pattern);
@@ -475,7 +475,7 @@ namespace ClashN
             //domain = domain.TrimEx();
 
             //模式字符串
-            string pattern = @"^(?=^.{3,255}$)[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+$";
+            var pattern = @"^(?=^.{3,255}$)[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+$";
 
             //验证
             return IsMatch(domain, pattern);
@@ -548,7 +548,7 @@ namespace ClashN
 
                 if (run)
                 {
-                    string exePath = $"\"{GetExePath()}\"";
+                    var exePath = $"\"{GetExePath()}\"";
                     if (IsAdministrator())
                     {
                         AutoStart(autoRunName, exePath, "");
@@ -573,8 +573,8 @@ namespace ClashN
         {
             try
             {
-                string value = RegReadValue(autoRunRegPath, autoRunName, "");
-                string exePath = GetExePath();
+                var value = RegReadValue(autoRunRegPath, autoRunName, "");
+                var exePath = GetExePath();
                 if (value?.Equals(exePath) == true || value?.Equals($"\"{exePath}\"") == true)
                 {
                     return true;
@@ -593,7 +593,7 @@ namespace ClashN
         /// <returns></returns>
         public static string GetPath(string fileName)
         {
-            string startupPath = StartupPath();
+            var startupPath = StartupPath();
             if (IsNullOrEmpty(fileName))
             {
                 return startupPath;
@@ -621,7 +621,7 @@ namespace ClashN
             try
             {
                 regKey = Registry.CurrentUser.OpenSubKey(path, false);
-                string value = regKey?.GetValue(name) as string;
+                var value = regKey?.GetValue(name) as string;
                 if (IsNullOrEmpty(value))
                 {
                     return def;
@@ -676,7 +676,7 @@ namespace ClashN
         public static bool GetDotNetRelease(int release)
         {
             const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
-            using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
+            using (var ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
             {
                 if (ndpKey != null && ndpKey.GetValue("Release") != null)
                 {
@@ -699,10 +699,10 @@ namespace ClashN
             {
                 return;
             }
-            string TaskName = taskName;
+            var TaskName = taskName;
             var logonUser = WindowsIdentity.GetCurrent().Name;
-            string taskDescription = description;
-            string deamonFileName = fileName;
+            var taskDescription = description;
+            var deamonFileName = fileName;
 
             using (var taskService = new TaskService())
             {
@@ -741,12 +741,12 @@ namespace ClashN
             long roundtripTime = -1;
             try
             {
-                int timeout = 30;
-                int echoNum = 2;
-                Ping pingSender = new Ping();
-                for (int i = 0; i < echoNum; i++)
+                var timeout = 30;
+                var echoNum = 2;
+                var pingSender = new Ping();
+                for (var i = 0; i < echoNum; i++)
                 {
-                    PingReply reply = pingSender.Send(host, timeout);
+                    var reply = pingSender.Send(host, timeout);
                     if (reply.Status == IPStatus.Success)
                     {
                         if (reply.RoundtripTime < 0)
@@ -777,8 +777,8 @@ namespace ClashN
             List<string> lstIPAddress = new List<string>();
             try
             {
-                IPHostEntry IpEntry = Dns.GetHostEntry(Dns.GetHostName());
-                foreach (IPAddress ipa in IpEntry.AddressList)
+                var IpEntry = Dns.GetHostEntry(Dns.GetHostName());
+                foreach (var ipa in IpEntry.AddressList)
                 {
                     if (ipa.AddressFamily == AddressFamily.InterNetwork)
                         lstIPAddress.Add(ipa.ToString());
@@ -807,15 +807,15 @@ namespace ClashN
 
         public static bool PortInUse(int port)
         {
-            bool inUse = false;
+            var inUse = false;
             try
             {
-                IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
+                var ipProperties = IPGlobalProperties.GetIPGlobalProperties();
                 IPEndPoint[] ipEndPoints = ipProperties.GetActiveTcpListeners();
 
                 var lstIpEndPoints = new List<IPEndPoint>(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners());
 
-                foreach (IPEndPoint endPoint in ipEndPoints)
+                foreach (var endPoint in ipEndPoints)
                 {
                     if (endPoint.Port == port)
                     {
@@ -842,7 +842,7 @@ namespace ClashN
         {
             try
             {
-                string location = GetExePath();
+                var location = GetExePath();
                 if (blFull)
                 {
                     return string.Format("clashN - V{0} - {1}",
@@ -885,16 +885,16 @@ namespace ClashN
         /// <returns></returns>
         public static string GetClipboardData()
         {
-            string strData = string.Empty;
+            var strData = string.Empty;
             try
             {
 
-                IDataObject data = Clipboard.GetDataObject();
+                var data = Clipboard.GetDataObject();
                 if (data.GetDataPresent(DataFormats.UnicodeText))
                 {
                     strData = data.GetData(DataFormats.UnicodeText).ToString();
                 }
-                if (Utils.IsNullOrEmpty(strData))
+                if (IsNullOrEmpty(strData))
                 {
                     var file = Clipboard.GetFileDropList();
                     if (file.Count > 0)
@@ -967,8 +967,8 @@ namespace ClashN
         {
             try
             {
-                WindowsIdentity current = WindowsIdentity.GetCurrent();
-                WindowsPrincipal windowsPrincipal = new WindowsPrincipal(current);
+                var current = WindowsIdentity.GetCurrent();
+                var windowsPrincipal = new WindowsPrincipal(current);
                 //WindowsBuiltInRole可以枚举出很多权限，例如系统用户、User、Guest等等
                 return windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator);
             }
@@ -986,7 +986,7 @@ namespace ClashN
 
         public static string GetDownloadFileName(string url)
         {
-            var fileName = System.IO.Path.GetFileName(url);
+            var fileName = Path.GetFileName(url);
             fileName += "_temp";
 
             return fileName;
@@ -1008,7 +1008,7 @@ namespace ClashN
 
         public static bool IsGuidByParse(string strSrc)
         {
-            return Guid.TryParse(strSrc, out Guid g);
+            return Guid.TryParse(strSrc, out var g);
         }
 
         public static void ProcessStart(string fileName)
@@ -1026,9 +1026,9 @@ namespace ClashN
         public static void SetDarkBorder(System.Windows.Window window, bool dark)
         {
             // Make sure the handle is created before the window is shown
-            IntPtr hWnd = new System.Windows.Interop.WindowInteropHelper(window).EnsureHandle();
-            int attribute = dark ? 1 : 0;
-            uint attributeSize = (uint)Marshal.SizeOf(attribute);
+            var hWnd = new System.Windows.Interop.WindowInteropHelper(window).EnsureHandle();
+            var attribute = dark ? 1 : 0;
+            var attributeSize = (uint)Marshal.SizeOf(attribute);
             DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1, ref attribute, attributeSize);
             DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref attribute, attributeSize);
         }
@@ -1040,7 +1040,7 @@ namespace ClashN
         // return path to store temporary files
         public static string GetTempPath(string filename = "")
         {
-            string _tempPath = Path.Combine(StartupPath(), "guiTemps");
+            var _tempPath = Path.Combine(StartupPath(), "guiTemps");
             if (!Directory.Exists(_tempPath))
             {
                 Directory.CreateDirectory(_tempPath);
@@ -1057,8 +1057,8 @@ namespace ClashN
 
         public static string UnGzip(byte[] buf)
         {
-            MemoryStream sb = new MemoryStream();
-            using (GZipStream input = new GZipStream(new MemoryStream(buf),
+            var sb = new MemoryStream();
+            using (var input = new GZipStream(new MemoryStream(buf),
             CompressionMode.Decompress,
             false))
             {
@@ -1069,7 +1069,7 @@ namespace ClashN
 
         public static string GetBackupPath(string filename)
         {
-            string _tempPath = Path.Combine(StartupPath(), "guiBackups");
+            var _tempPath = Path.Combine(StartupPath(), "guiBackups");
             if (!Directory.Exists(_tempPath))
             {
                 Directory.CreateDirectory(_tempPath);
@@ -1078,7 +1078,7 @@ namespace ClashN
         }
         public static string GetConfigPath(string filename = "")
         {
-            string _tempPath = Path.Combine(StartupPath(), "guiConfigs");
+            var _tempPath = Path.Combine(StartupPath(), "guiConfigs");
             if (!Directory.Exists(_tempPath))
             {
                 Directory.CreateDirectory(_tempPath);
@@ -1095,7 +1095,7 @@ namespace ClashN
 
         public static string GetBinPath(string filename, ECoreType? coreType = null)
         {
-            string _tempPath = Path.Combine(StartupPath(), "bin");
+            var _tempPath = Path.Combine(StartupPath(), "bin");
             if (!Directory.Exists(_tempPath))
             {
                 Directory.CreateDirectory(_tempPath);
@@ -1139,12 +1139,12 @@ namespace ClashN
         {
             try
             {
-                foreach (Screen screen in Screen.AllScreens)
+                foreach (var screen in Screen.AllScreens)
                 {
-                    using (Bitmap fullImage = new Bitmap(screen.Bounds.Width,
+                    using (var fullImage = new Bitmap(screen.Bounds.Width,
                                                     screen.Bounds.Height))
                     {
-                        using (Graphics g = Graphics.FromImage(fullImage))
+                        using (var g = Graphics.FromImage(fullImage))
                         {
                             g.CopyFromScreen(screen.Bounds.X,
                                              screen.Bounds.Y,
@@ -1152,29 +1152,29 @@ namespace ClashN
                                              fullImage.Size,
                                              CopyPixelOperation.SourceCopy);
                         }
-                        int maxTry = 10;
-                        for (int i = 0; i < maxTry; i++)
+                        var maxTry = 10;
+                        for (var i = 0; i < maxTry; i++)
                         {
-                            int marginLeft = (int)((double)fullImage.Width * i / 2.5 / maxTry);
-                            int marginTop = (int)((double)fullImage.Height * i / 2.5 / maxTry);
-                            Rectangle cropRect = new Rectangle(marginLeft, marginTop, fullImage.Width - marginLeft * 2, fullImage.Height - marginTop * 2);
-                            Bitmap target = new Bitmap(screen.Bounds.Width, screen.Bounds.Height);
+                            var marginLeft = (int)((double)fullImage.Width * i / 2.5 / maxTry);
+                            var marginTop = (int)((double)fullImage.Height * i / 2.5 / maxTry);
+                            var cropRect = new Rectangle(marginLeft, marginTop, fullImage.Width - marginLeft * 2, fullImage.Height - marginTop * 2);
+                            var target = new Bitmap(screen.Bounds.Width, screen.Bounds.Height);
 
-                            double imageScale = (double)screen.Bounds.Width / (double)cropRect.Width;
-                            using (Graphics g = Graphics.FromImage(target))
+                            var imageScale = screen.Bounds.Width / (double)cropRect.Width;
+                            using (var g = Graphics.FromImage(target))
                             {
                                 g.DrawImage(fullImage, new Rectangle(0, 0, target.Width, target.Height),
                                                 cropRect,
                                                 GraphicsUnit.Pixel);
                             }
 
-                            BitmapLuminanceSource source = new BitmapLuminanceSource(target);
-                            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-                            QRCodeReader reader = new QRCodeReader();
-                            Result result = reader.decode(bitmap);
+                            var source = new BitmapLuminanceSource(target);
+                            var bitmap = new BinaryBitmap(new HybridBinarizer(source));
+                            var reader = new QRCodeReader();
+                            var result = reader.decode(bitmap);
                             if (result != null)
                             {
-                                string ret = result.Text;
+                                var ret = result.Text;
                                 return ret;
                             }
                         }
@@ -1205,7 +1205,7 @@ namespace ClashN
                 .Build();
             try
             {
-                T obj = deserializer.Deserialize<T>(str);
+                var obj = deserializer.Deserialize<T>(str);
                 return obj;
             }
             catch (Exception ex)
@@ -1220,13 +1220,13 @@ namespace ClashN
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string ToYaml(Object obj)
+        public static string ToYaml(object obj)
         {
             var serializer = new SerializerBuilder()
                     //.WithNamingConvention(CamelCaseNamingConvention.Instance)
                     .Build();
 
-            string result = string.Empty;
+            var result = string.Empty;
             try
             {
                 result = serializer.Serialize(obj);

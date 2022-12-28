@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Threading;
 using ClashN.ViewModels;
+using ClashN.Tool;
 
 namespace ClashN.Views
 {
@@ -40,7 +41,7 @@ namespace ClashN.Views
             {
                 return;
             }
-            string? msgFilter = ViewModel?.MsgFilter;
+            var msgFilter = ViewModel?.MsgFilter;
             if (!Utils.IsNullOrEmpty(msgFilter))
             {
                 if (!Regex.IsMatch(msg, msgFilter))

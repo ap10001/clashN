@@ -1,6 +1,7 @@
 ﻿using ClashN.Resx;
 using System.IO;
 using ClashN.Mode;
+using ClashN.Tool;
 
 namespace ClashN.Handler
 {
@@ -41,7 +42,7 @@ namespace ClashN.Handler
                     File.Delete(fileName);
                 }
 
-                string addressFileName = node.address;
+                var addressFileName = node.address;
                 if (Utils.IsNullOrEmpty(addressFileName))
                 {
                     msg = ResUI.FailedGetDefaultConfiguration;
@@ -57,9 +58,9 @@ namespace ClashN.Handler
                     return -1;
                 }
 
-                string tagYamlStr1 = "!<str>";
-                string tagYamlStr2 = "__strn__";
-                string tagYamlStr3 = "!!str";
+                var tagYamlStr1 = "!<str>";
+                var tagYamlStr2 = "__strn__";
+                var tagYamlStr3 = "!!str";
                 var config = LazyConfig.Instance.GetConfig();
                 var txtFile = File.ReadAllText(addressFileName);
                 txtFile = txtFile.Replace(tagYamlStr1, tagYamlStr2);
@@ -110,7 +111,7 @@ namespace ClashN.Handler
                 //enable tun mode
                 if (node.enableTun)
                 {
-                    string tun = Utils.GetEmbedText(Global.SampleTun);
+                    var tun = Utils.GetEmbedText(Global.SampleTun);
                     if (!Utils.IsNullOrEmpty(tun))
                     {
                         var tunContent = Utils.FromYaml<Dictionary<string, object>>(tun);
@@ -205,8 +206,8 @@ namespace ClashN.Handler
         }
         private static void ModifyContentMerge(Dictionary<string, object> fileContent, string key, object value)
         {
-            bool blPrepend = false;
-            bool blRemoved = false;
+            var blPrepend = false;
+            var blRemoved = false;
             if (key.StartsWith("prepend-"))
             {
                 blPrepend = true;
@@ -239,7 +240,7 @@ namespace ClashN.Handler
             {
                 foreach (var item in lstValue)
                 {
-                    lstOri.RemoveAll(t => t.ToString().StartsWith(item.ToString()));
+                    lstOri.RemoveAll(t => t.ToString()!.StartsWith(item.ToString()!));
                 }
                 return;
             }

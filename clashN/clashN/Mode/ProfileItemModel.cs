@@ -1,4 +1,5 @@
 ﻿using ClashN.Base;
+using ClashN.Tool;
 
 namespace ClashN.Mode
 {

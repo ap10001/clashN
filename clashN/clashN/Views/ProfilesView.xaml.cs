@@ -134,8 +134,8 @@ namespace ClashN.Views
         private void LstProfiles_MouseMove(object sender, MouseEventArgs e)
         {
             // Get the current mouse position
-            Point mousePos = e.GetPosition(null);
-            Vector diff = startPoint - mousePos;
+            var mousePos = e.GetPosition(null);
+            var diff = startPoint - mousePos;
 
             if (e.LeftButton == MouseButtonState.Pressed &&
                 (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
@@ -147,11 +147,11 @@ namespace ClashN.Views
                 var listViewItem = FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
                 if (listViewItem == null) return;           // Abort
                                                             // Find the data behind the ListViewItem
-                ProfileItemModel item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
+                var item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
                 if (item == null) return;                   // Abort
                                                             // Initialize the drag & drop operation
                 startIndex = lstProfiles.SelectedIndex;
-                DataObject dragData = new DataObject(formatData, item);
+                var dragData = new DataObject(formatData, item);
                 DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Copy | DragDropEffects.Move);
             }
         }
@@ -179,7 +179,7 @@ namespace ClashN.Views
                     return;
                 }
                 // Find the data behind the ListViewItem
-                ProfileItemModel item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
+                var item = (ProfileItemModel)listView.ItemContainerGenerator.ItemFromContainer(listViewItem);
                 if (item == null) return;
                 // Move item into observable collection 
                 // (this will be automatically reflected to lstView.ItemsSource)

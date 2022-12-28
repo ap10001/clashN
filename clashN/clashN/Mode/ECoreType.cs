@@ -3,9 +3,9 @@ namespace ClashN.Mode
 {
     public enum ECoreType
     {
-        clash = 1,
-        clash_meta = 2,
-        clash_premium = 3,
-        clashN = 99
+        Clash = 1,
+        ClashMeta = 2,
+        ClashPremium = 3,
+        ClashN = 99
     }
 }

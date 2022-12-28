@@ -9,8 +9,8 @@ namespace ClashN.Tool
     {
         public static void Setup()
         {
-            LoggingConfiguration config = new LoggingConfiguration();
-            FileTarget fileTarget = new FileTarget();
+            var config = new LoggingConfiguration();
+            var fileTarget = new FileTarget();
             config.AddTarget("file", fileTarget);
             fileTarget.Layout = "${longdate}-${level:uppercase=true} ${message}";
             fileTarget.FileName = Utils.GetPath(@"guiLogs/") + "${shortdate}.txt";

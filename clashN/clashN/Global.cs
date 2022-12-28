@@ -1,4 +1,6 @@
-﻿namespace ClashN
+﻿using ClashN.Tool;
+
+namespace ClashN
 {
     internal abstract class Global
     {

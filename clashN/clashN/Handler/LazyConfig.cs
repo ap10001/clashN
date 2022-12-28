@@ -41,7 +41,7 @@ namespace ClashN.Handler
             {
                 return (ECoreType)profileItem.coreType;
             }
-            return ECoreType.clash;
+            return ECoreType.Clash;
 
         }
 
@@ -60,7 +60,7 @@ namespace ClashN.Handler
 
             coreInfos.Add(new CoreInfo
             {
-                coreType = ECoreType.clashN,
+                coreType = ECoreType.ClashN,
                 coreUrl = Global.NUrl,
                 coreLatestUrl = Global.NUrl + "/latest",
                 coreDownloadUrl32 = Global.NUrl + "/download/{0}/clashN-32.zip",
@@ -69,7 +69,7 @@ namespace ClashN.Handler
 
             coreInfos.Add(new CoreInfo
             {
-                coreType = ECoreType.clash,
+                coreType = ECoreType.Clash,
                 coreExes = new List<string> { "clash-windows-amd64-v3", "clash-windows-amd64", "clash-windows-386", "clash" },
                 arguments = "-f config.yaml",
                 coreUrl = Global.clashCoreUrl,
@@ -81,7 +81,7 @@ namespace ClashN.Handler
 
             coreInfos.Add(new CoreInfo
             {
-                coreType = ECoreType.clash_meta,
+                coreType = ECoreType.ClashMeta,
                 coreExes = new List<string> { $"Clash.Meta-windows-amd64{(Avx2.X64.IsSupported ? "" : "-compatible")}", "Clash.Meta-windows-amd64-compatible", "Clash.Meta-windows-amd64", "Clash.Meta-windows-386", "Clash.Meta", "clash" },
                 arguments = "-f config.yaml",
                 coreUrl = Global.clashMetaCoreUrl,
@@ -93,7 +93,7 @@ namespace ClashN.Handler
 
             coreInfos.Add(new CoreInfo
             {
-                coreType = ECoreType.clash_premium,
+                coreType = ECoreType.ClashPremium,
                 coreExes = new List<string> { "clash-windows-amd64-v3", "clash-windows-amd64", "clash-windows-386", "clash" },
                 arguments = "-f config.yaml",
                 coreUrl = Global.clashCoreUrl,

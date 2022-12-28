@@ -3,18 +3,19 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using ClashN.Mode;
+using ClashN.Tool;
 
 namespace ClashN.Handler
 {
     /// <summary>
     /// core进程处理类
     /// </summary>
-    class CoreHandler
+    internal class CoreHandler
     {
-        private static string coreConfigRes = Global.coreConfigFileName;
-        private CoreInfo coreInfo;
-        private Process _process;
-        Action<bool, string> _updateFunc;
+        private const string CoreConfigRes = Global.coreConfigFileName;
+        private CoreInfo coreInfo = null!;
+        private Process _process = null!;
+        private readonly Action<bool, string> _updateFunc;
 
         public CoreHandler(Action<bool, string> update)
         {
@@ -43,9 +44,9 @@ namespace ClashN.Handler
                 }
 
 
-                SetCore(config, item, out bool blChanged);
-                string fileName = Utils.GetConfigPath(coreConfigRes);
-                if (CoreConfigHandler.GenerateClientConfig(item, fileName, false, out string msg) != 0)
+                SetCore(config, item, out var blChanged);
+                var fileName = Utils.GetConfigPath(CoreConfigRes);
+                if (CoreConfigHandler.GenerateClientConfig(item, fileName, false, out var msg) != 0)
                 {
                     CoreStop();
                     ShowMsg(false, msg);
@@ -96,12 +97,12 @@ namespace ClashN.Handler
                         return;
                     }
 
-                    foreach (string vName in coreInfo.coreExes)
+                    foreach (var vName in coreInfo.coreExes)
                     {
                         Process[] existing = Process.GetProcessesByName(vName);
-                        foreach (Process p in existing)
+                        foreach (var p in existing)
                         {
-                            string path = p.MainModule.FileName;
+                            var path = p.MainModule.FileName;
                             if (path == $"{Utils.GetBinPath(vName, coreInfo.coreType)}.exe")
                             {
                                 KillProcess(p);
@@ -140,11 +141,11 @@ namespace ClashN.Handler
         /// <summary>
         /// Core停止
         /// </summary>
-        public void CoreStopPid(int pid)
+        public static void CoreStopPid(int pid)
         {
             try
             {
-                Process _p = Process.GetProcessById(pid);
+                var _p = Process.GetProcessById(pid);
                 KillProcess(_p);
             }
             catch (Exception ex)
@@ -155,10 +156,10 @@ namespace ClashN.Handler
 
         private string FindCoreExe()
         {
-            string fileName = string.Empty;
-            foreach (string name in coreInfo.coreExes)
+            var fileName = string.Empty;
+            foreach (var name in coreInfo.coreExes)
             {
-                string vName = string.Format("{0}.exe", name);
+                var vName = string.Format("{0}.exe", name);
                 vName = Utils.GetBinPath(vName, coreInfo.coreType);
                 if (File.Exists(vName))
                 {
@@ -168,7 +169,7 @@ namespace ClashN.Handler
             }
             if (Utils.IsNullOrEmpty(fileName))
             {
-                string msg = string.Format(ResUI.NotFoundCore, coreInfo.coreUrl);
+                var msg = string.Format(ResUI.NotFoundCore, coreInfo.coreUrl);
                 ShowMsg(false, msg);
             }
             return fileName;
@@ -180,11 +181,11 @@ namespace ClashN.Handler
         private void CoreStart(ProfileItem item)
         {
             ShowMsg(false, string.Format(ResUI.StartService, DateTime.Now.ToString()));
-            ShowMsg(false, $"{ResUI.TbCoreType} {coreInfo.coreType.ToString()}");
+            ShowMsg(false, $"{ResUI.TbCoreType} {coreInfo.coreType}");
 
             try
             {
-                string fileName = FindCoreExe();
+                var fileName = FindCoreExe();
                 if (fileName == "") return;
 
                 //Portable Mode
@@ -195,7 +196,7 @@ namespace ClashN.Handler
                     arguments += $" -d \"{data}\"";
                 }
 
-                Process p = new Process
+                var p = new Process
                 {
                     StartInfo = new ProcessStartInfo
                     {
@@ -218,7 +219,7 @@ namespace ClashN.Handler
                 {
                     if (!String.IsNullOrEmpty(e.Data))
                     {
-                        string msg = e.Data + Environment.NewLine;
+                        var msg = e.Data + Environment.NewLine;
                         ShowMsg(false, msg);
                     }
                 });
@@ -238,7 +239,7 @@ namespace ClashN.Handler
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
-                string msg = ex.Message;
+                var msg = ex.Message;
                 ShowMsg(true, msg);
             }
         }
@@ -248,7 +249,7 @@ namespace ClashN.Handler
             _updateFunc(updateToTrayTooltip, msg);
         }
 
-        private void KillProcess(Process p)
+        private static void KillProcess(Process p)
         {
             try
             {
